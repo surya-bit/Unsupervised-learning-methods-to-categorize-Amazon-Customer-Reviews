@@ -1,0 +1,30 @@
+# directories log, error, and output must exist.
+
+universe = vanilla
+log    =    log/1-chtc_$(Cluster)_$(Process).log
+error  =  error/1-chtc_$(Cluster)_$(Process).err
+output = output/1-chtc_$(Cluster)_$(Process).out
+
+executable = ./project.sh
++is_resumable = true
+
+
+# The two arguments below are:
+# - the process number (0 or 1, since I used "queue 2")
+# - an output file name (myscript.R.0.txt or myscript.R.1.txt)
+arguments = $(filename) 
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = http://proxy.chtc.wisc.edu/SQUID/chtc/python38.tar.gz, packages.tar.gz,  project.py, /staging/groups/STAT_DSCP/amazon-data/archive/$(filename)
+
+Requirements = (Target.HasCHTCStaging == true)
+
+# transfer_output_files = data
+
+request_cpus = 1
+request_memory = 10GB
+request_disk = 5GB
+
+queue filename from files.txt
+#queue
